@@ -2,8 +2,7 @@
 
 namespace Anishdcruz\Watcher;
 
-use File;
-use DB;
+use Illuminate\Support\ServiceProvider;
 
 class WatcherServiceProvider extends ServiceProvider
 {
@@ -17,7 +16,7 @@ class WatcherServiceProvider extends ServiceProvider
         $this->app['db']->listen(function($sql) {
             $this->app['files']->put(
                 $this->getStoragePath(),
-                $this->parseContent($sql);
+                $this->parseContent($sql)
             );
         });
     }
@@ -29,6 +28,6 @@ class WatcherServiceProvider extends ServiceProvider
 
     protected function parseContent($sql)
     {
-        return "{$sql->time}, {$sql->sql}\n"
+        return "{$sql->time}, {$sql->sql}\n";
     }
 }
