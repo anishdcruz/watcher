@@ -12,7 +12,7 @@ class ListenCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'db:listen';
+    protected $signature = 'watcher:listen';
 
     /**
      * The console command description.
