@@ -9,9 +9,7 @@ class WatcherServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        if ($this->app->environment('production')) {
-            throw new Exception('It is unsafe to run Watcher in production.');
-        }
+        $this->warn();
 
         $this->app['db']->listen(function($sql) {
             $this->app['files']->put(
@@ -19,6 +17,24 @@ class WatcherServiceProvider extends ServiceProvider
                 $this->parseContent($sql)
             );
         });
+    }
+
+    public function register()
+    {
+        $this->warn();
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Console\ListenCommand::class,
+            ]);
+        }
+    }
+
+    protected function warn()
+    {
+        if ($this->app->environment('production')) {
+            throw new Exception('It is unsafe to run Dusk in production.');
+        }
     }
 
     protected function getStoragePath()
